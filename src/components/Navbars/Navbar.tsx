@@ -1,20 +1,17 @@
-import React from 'react';
-import classNames from 'classnames';
-// import PropTypes from 'prop-types';
+import React from "react";
+import classNames from "classnames";
 // @material-ui/core components
-import withStyles from '@material-ui/core/styles/withStyles';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
-import Hidden from '@material-ui/core/Hidden';
+import withStyles from "@material-ui/core/styles/withStyles";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import IconButton from "@material-ui/core/IconButton";
+import Hidden from "@material-ui/core/Hidden";
 // @material-ui/icons
-import Menu from '@material-ui/icons/Menu';
+import Menu from "@material-ui/icons/Menu";
 // core components
-import AdminNavbarLinks from './AdminNavbarLinks';
-import RTLNavbarLinks from './RTLNavbarLinks';
-import Button from '../CustomButtons/Button';
+import Button from "../CustomButtons/Button";
 
-import headerStyle from '../../assets/jss/material-dashboard-react/components/headerStyle';
+import headerStyle from "../../assets/jss/material-dashboard-react/components/headerStyle";
 
 function Header({ ...props }: any) {
   function makeBrand() {
@@ -29,7 +26,7 @@ function Header({ ...props }: any) {
   }
   const { classes, color } = props;
   const appBarClasses = classNames({
-    [' ' + classes[color]]: color
+    [" " + classes[color]]: color,
   });
   return (
     <AppBar className={classes.appBar + appBarClasses}>
@@ -40,9 +37,6 @@ function Header({ ...props }: any) {
             {makeBrand()}
           </Button>
         </div>
-        <Hidden smDown={true} implementation="css">
-          {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
-        </Hidden>
         <Hidden mdUp={true} implementation="css">
           <IconButton
             color="inherit"
@@ -56,10 +50,5 @@ function Header({ ...props }: any) {
     </AppBar>
   );
 }
-
-// Header.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   color: PropTypes.oneOf(['primary', 'info', 'success', 'warning', 'danger'])
-// };
 
 export default withStyles(headerStyle)(Header);

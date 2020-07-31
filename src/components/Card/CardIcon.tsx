@@ -23,17 +23,4 @@ function CardIcon({ ...props }: any) {
   );
 }
 
-// CardIcon.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   className: PropTypes.string,
-//   color: PropTypes.oneOf([
-//     "warning",
-//     "success",
-//     "danger",
-//     "info",
-//     "primary",
-//     "rose"
-//   ])
-// };
-
 export default withStyles(cardIconStyle)(CardIcon);

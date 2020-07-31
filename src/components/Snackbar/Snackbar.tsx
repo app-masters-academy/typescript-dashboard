@@ -1,6 +1,5 @@
 import React from 'react';
 import classNames from 'classnames';
-// import PropTypes from "prop-types";
 // @material-ui/core components
 import withStyles from '@material-ui/core/styles/withStyles';
 import Snack from '@material-ui/core/Snackbar';
@@ -68,16 +67,5 @@ function Snackbar({ ...props }: any) {
     />
   );
 }
-
-// Snackbar.propTypes = {
-//   classes: PropTypes.object.isRequired,
-//   message: PropTypes.node.isRequired,
-//   color: PropTypes.oneOf(["info", "success", "warning", "danger", "primary"]),
-//   close: PropTypes.bool,
-//   icon: PropTypes.func,
-//   place: PropTypes.oneOf(["tl", "tr", "tc", "br", "bl", "bc"]),
-//   open: PropTypes.bool,
-//   rtlActive: PropTypes.bool
-// };
 
 export default withStyles(snackbarContentStyle)(Snackbar);
