@@ -28,6 +28,10 @@ import CardHeader from "../../components/Card/CardHeader";
 import CardIcon from "../../components/Card/CardIcon";
 import CardBody from "../../components/Card/CardBody";
 import CardFooter from "../../components/Card/CardFooter";
+import moment from "moment";
+import "moment/locale/pt-br";
+
+moment.locale("pt-BR");
 
 import { bugs, website, server } from "../../variables/general";
 
@@ -38,6 +42,7 @@ import {
 } from "../../variables/charts";
 
 import dashboardStyle from "../../assets/jss/material-dashboard-react/views/dashboardStyle";
+import CardDashboard from "../../components/CardDashboard";
 
 interface Props {
   classes: any;
@@ -45,17 +50,82 @@ interface Props {
 
 interface State {
   value: number;
+  data: Response[];
 }
+
+interface Response {
+  uid: number;
+  uf: string;
+  state: string;
+  cases: number;
+  deaths: number;
+  suspects: number;
+  refuses: number;
+  datetime: string | number | Date;
+}
+
+interface CardDash {
+  type: "success" | "warning" | "info" | "primary" | "danger";
+  title: string;
+  value: string;
+  icon: React.ReactElement;
+  footerIcon: React.ReactElement;
+  footerLabel: string;
+}
+
+const mockData: CardDash[] = [
+  {
+    type: "success",
+    icon: <Store />,
+    title: "Revenue",
+    value: "$34,245",
+    footerIcon: <DateRange />,
+    footerLabel: "Last 24 Hours",
+  },
+  {
+    type: "warning",
+    icon: <Icon>content_copy</Icon>,
+    title: "Used Space",
+    value: "49/50",
+    footerIcon: <Warning />,
+    footerLabel: "Get more space",
+  },
+  {
+    type: "danger",
+    icon: <Icon>info_outline</Icon>,
+    title: "Fixed Issues",
+    value: "75",
+    footerIcon: <LocalOffer />,
+    footerLabel: "Tracked from Github",
+  },
+  {
+    type: "info",
+    icon:  <Accessibility />,
+    title: "Followers",
+    value: "+245",
+    footerIcon: <Update />,
+    footerLabel: "Just Updated",
+  },
+];
 
 class Dashboard extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = {
       value: 0,
+      data: [],
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
   }
+
+  componentDidMount = async () => {
+    const response = (await fetch(
+      "https://covid19-brazil-api.now.sh/api/report/v1"
+    ).then((resp) => resp.json())) as { data: Response[] };
+    this.setState({ data: response.data });
+  };
+
   handleChange = (event: any, value: number) => {
     this.setState({ value });
   };
@@ -69,80 +139,19 @@ class Dashboard extends React.Component<Props, State> {
     return (
       <div>
         <GridContainer>
-          <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="success" stats={true} icon={true}>
-                <CardIcon color="success">
-                  <Store />
-                </CardIcon>
-                <p className={classes.cardCategory}>Revenue</p>
-                <h3 className={classes.cardTitle}>$34,245</h3>
-              </CardHeader>
-              <CardFooter stats={true}>
-                <div className={classes.stats}>
-                  <DateRange />
-                  Last 24 Hours
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="warning" stats={true} icon={true}>
-                <CardIcon color="warning">
-                  <Icon>content_copy</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Used Space</p>
-                <h3 className={classes.cardTitle}>
-                  49/50 <small>GB</small>
-                </h3>
-              </CardHeader>
-              <CardFooter stats={true}>
-                <div className={classes.stats}>
-                  <Danger>
-                    <Warning />
-                  </Danger>
-                  <a href="#pablo" onClick={(e) => e.preventDefault()}>
-                    Get more space
-                  </a>
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="danger" stats={true} icon={true}>
-                <CardIcon color="danger">
-                  <Icon>info_outline</Icon>
-                </CardIcon>
-                <p className={classes.cardCategory}>Fixed Issues</p>
-                <h3 className={classes.cardTitle}>75</h3>
-              </CardHeader>
-              <CardFooter stats={true}>
-                <div className={classes.stats}>
-                  <LocalOffer />
-                  Tracked from Github
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
-            <Card>
-              <CardHeader color="info" stats={true} icon={true}>
-                <CardIcon color="info">
-                  <Accessibility />
-                </CardIcon>
-                <p className={classes.cardCategory}>Followers</p>
-                <h3 className={classes.cardTitle}>+245</h3>
-              </CardHeader>
-              <CardFooter stats={true}>
-                <div className={classes.stats}>
-                  <Update />
-                  Just Updated
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
+          {mockData.map((card) => (
+            <GridItem xs={12} sm={6} md={3}>
+              <CardDashboard
+                classes={classes}
+                color={card.type}
+                icon={card.icon}
+                title={card.title}
+                value={card.value}
+                footerIcon={card.footerIcon}
+                footerLabel={card.footerLabel}
+              />
+            </GridItem>
+          ))}
         </GridContainer>
         <GridContainer>
           <GridItem xs={12} sm={12} md={4}>
@@ -216,48 +225,7 @@ class Dashboard extends React.Component<Props, State> {
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={6}>
-            <CustomTabs
-              title="Tasks:"
-              headerColor="primary"
-              tabs={[
-                {
-                  tabName: "Bugs",
-                  tabIcon: BugReport,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0, 3]}
-                      tasksIndexes={[0, 1, 2, 3]}
-                      tasks={bugs}
-                    />
-                  ),
-                },
-                {
-                  tabName: "Website",
-                  tabIcon: Code,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[0]}
-                      tasksIndexes={[0, 1]}
-                      tasks={website}
-                    />
-                  ),
-                },
-                {
-                  tabName: "Server",
-                  tabIcon: Cloud,
-                  tabContent: (
-                    <Tasks
-                      checkedIndexes={[1]}
-                      tasksIndexes={[0, 1, 2]}
-                      tasks={server}
-                    />
-                  ),
-                },
-              ]}
-            />
-          </GridItem>
-          <GridItem xs={12} sm={12} md={6}>
+          <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="warning">
                 <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
@@ -268,13 +236,26 @@ class Dashboard extends React.Component<Props, State> {
               <CardBody>
                 <Table
                   tableHeaderColor="warning"
-                  tableHead={["ID", "Name", "Salary", "Country"]}
-                  tableData={[
-                    ["1", "Dakota Rice", "$36,738", "Niger"],
-                    ["2", "Minerva Hooper", "$23,789", "Curaçao"],
-                    ["3", "Sage Rodriguez", "$56,142", "Netherlands"],
-                    ["4", "Philip Chaney", "$38,735", "Korea, South"],
+                  tableHead={[
+                    "UF",
+                    "Estado",
+                    "Casos",
+                    "Mortes",
+                    "Supeitas",
+                    "Data",
                   ]}
+                  tableData={this.state.data
+                    .sort((a, b) => (a.uf > b.uf ? 1 : -1))
+                    .map((item) => {
+                      return [
+                        item.uf,
+                        item.state,
+                        item.cases,
+                        item.deaths,
+                        item.suspects,
+                        moment(item.datetime).fromNow(),
+                      ];
+                    })}
                 />
               </CardBody>
             </Card>
