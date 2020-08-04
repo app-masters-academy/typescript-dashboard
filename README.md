@@ -94,6 +94,7 @@ Se seu editor não estiver na lista ou não tiver nenhum instalado, recomendados
 - [Propriedades e Componentes](https://pt-br.reactjs.org/docs/components-and-props.html)
 - [Estado e Ciclo de Vida](https://pt-br.reactjs.org/docs/state-and-lifecycle.html)
 - [Roteamento com React Router Dom](https://blog.rocketseat.com.br/paginacao-react-router/)
+- [Tipando em Componentes](https://medium.com/@oieduardorabelo/react-e-typescript-o-dilema-defaultprops-4711e0e6f271)
   
 ### Apis de Exemplo
 
