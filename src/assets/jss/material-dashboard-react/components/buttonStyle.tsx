@@ -92,6 +92,7 @@ const buttonStyle = createStyles({
   white: {
     '&,&:focus,&:hover': {
       backgroundColor: whiteColor,
+      borderColor: grayColor[0],
       color: grayColor[0]
     }
   },
@@ -119,6 +120,7 @@ const buttonStyle = createStyles({
   },
   primary: {
     backgroundColor: primaryColor[0],
+    borderColor: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(' +
       hexToRgb(primaryColor[0]) +
@@ -141,6 +143,7 @@ const buttonStyle = createStyles({
   },
   info: {
     backgroundColor: infoColor[0],
+    borderColor: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(' +
       hexToRgb(infoColor[0]) +
@@ -163,6 +166,7 @@ const buttonStyle = createStyles({
   },
   success: {
     backgroundColor: successColor[0],
+    borderColor: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(' +
       hexToRgb(successColor[0]) +
@@ -185,6 +189,7 @@ const buttonStyle = createStyles({
   },
   warning: {
     backgroundColor: warningColor[0],
+    borderColor: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(' +
       hexToRgb(warningColor[0]) +
@@ -207,6 +212,7 @@ const buttonStyle = createStyles({
   },
   danger: {
     backgroundColor: dangerColor[0],
+    borderColor: whiteColor,
     boxShadow:
       '0 2px 2px 0 rgba(' +
       hexToRgb(dangerColor[0]) +
@@ -274,6 +280,10 @@ const buttonStyle = createStyles({
   disabled: {
     opacity: 0.65,
     pointerEvents: 'none'
+  },
+  outlined: {
+    border: 1,
+    borderStyle: 'solid'
   },
   lg: {
     padding: '1.125rem 2.25rem',

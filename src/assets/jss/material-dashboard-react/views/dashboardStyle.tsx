@@ -77,6 +77,10 @@ const dashboardStyle = createStyles({
       fontWeight: '400',
       lineHeight: 1
     }
+  },
+  messages: {
+    display: 'flex',
+    justifyContent: 'space-between'
   }
 });
 

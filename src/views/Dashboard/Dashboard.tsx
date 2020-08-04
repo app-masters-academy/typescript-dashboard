@@ -16,6 +16,7 @@ import Accessibility from "@material-ui/icons/Accessibility";
 import BugReport from "@material-ui/icons/BugReport";
 import Code from "@material-ui/icons/Code";
 import Cloud from "@material-ui/icons/Cloud";
+import CheckIcon from '@material-ui/icons/Check';
 // core components
 import GridItem from "../../components/Grid/GridItem";
 import GridContainer from "../../components/Grid/GridContainer";
@@ -24,6 +25,7 @@ import Tasks from "../../components/Tasks/Tasks";
 import CustomTabs from "../../components/CustomTabs/CustomTabs";
 import Danger from "../../components/Typography/Danger";
 import Card from "../../components/Card/Card";
+import Button from '../../components/CustomButtons/Button';
 import CardHeader from "../../components/Card/CardHeader";
 import CardIcon from "../../components/Card/CardIcon";
 import CardBody from "../../components/Card/CardBody";
@@ -38,6 +40,9 @@ import {
 } from "../../variables/charts";
 
 import dashboardStyle from "../../assets/jss/material-dashboard-react/views/dashboardStyle";
+import CustomInput from "../../components/CustomInput/CustomInput";
+import { InputLabel } from "@material-ui/core";
+import Success from "../../components/Typography/Success";
 
 interface Props {
   classes: any;
@@ -45,6 +50,9 @@ interface Props {
 
 interface State {
   value: number;
+  creatingMessage: boolean;
+  messageSuccess: boolean;
+  messageFailed: boolean
 }
 
 class Dashboard extends React.Component<Props, State> {
@@ -52,6 +60,9 @@ class Dashboard extends React.Component<Props, State> {
     super(props);
     this.state = {
       value: 0,
+      creatingMessage: false,
+      messageSuccess: true,
+      messageFailed: true,
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
@@ -66,6 +77,7 @@ class Dashboard extends React.Component<Props, State> {
 
   render() {
     const { classes } = this.props;
+    const { creatingMessage, messageFailed, messageSuccess } = this.state;
     return (
       <div>
         <GridContainer>
@@ -277,6 +289,94 @@ class Dashboard extends React.Component<Props, State> {
                   ]}
                 />
               </CardBody>
+            </Card>
+          </GridItem>
+        </GridContainer>
+        <GridContainer>
+          <GridItem xs={12}>
+          <Card>
+              <CardHeader color="success">
+                <div className={classes.messages}>
+                  <h4 className={classes.cardTitleWhite}>Mensagens Positivas</h4>
+                  {!creatingMessage && (
+                    <Button 
+                      color="transparent" 
+                      variant="outlined" 
+                      onClick={() => this.setState({ creatingMessage: true })}
+                    >
+                      Enviar Mensagem
+                    </Button>
+                  )}
+                </div>
+              </CardHeader>
+              <CardBody>
+                {!creatingMessage 
+                  ? <React.Fragment>
+                      <h5 className={classes.cardTitle}>
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac est pulvinar, tempor turpis id, 
+                        vehicula magna.
+                      </h5>
+                      <p className={classes.cardCategory}>
+                        Jane Doe
+                      </p>
+                    </React.Fragment> 
+                  : <React.Fragment>
+                      <GridContainer>
+                        <GridItem xs={12}>
+                          <CustomInput
+                            labelText="Nome"
+                            id="name"
+                            color="success"
+                            formControlProps={{
+                              fullWidth: true
+                            }}
+                          />
+                        </GridItem>
+                      </GridContainer>
+                      <GridContainer>
+                        <GridItem xs={12}>
+                        <CustomInput
+                          labelText="Mensagem"
+                          id="message"
+                          formControlProps={{
+                            fullWidth: true
+                          }}
+                          inputProps={{
+                            multiline: true,
+                            rows: 5
+                          }}
+                        />
+                        </GridItem>
+                      </GridContainer>
+                    </React.Fragment>
+                }
+              </CardBody>
+              {creatingMessage && (
+                <CardFooter>
+                  <Button color="danger" onClick={() => this.setState({ creatingMessage: false })} >Cancelar</Button>
+                  <Button color="success">Enviar Mensagem</Button>
+                </CardFooter>
+              )}
+              {messageFailed && (
+                <CardFooter>
+                  <div className={classes.stats}>
+                    <Danger>
+                      <Warning />
+                      Falha ao enviar mensagem
+                    </Danger>
+                  </div>
+                </CardFooter>
+              )}
+              {messageSuccess && (
+                <CardFooter>
+                  <div className={classes.stats}>
+                    <Success>
+                      <CheckIcon />
+                      Mensagem enviada com sucesso
+                    </Success>
+                  </div>
+                </CardFooter>
+              )}
             </Card>
           </GridItem>
         </GridContainer>
