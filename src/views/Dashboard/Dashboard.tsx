@@ -101,10 +101,7 @@ class Dashboard extends React.Component<Props, State> {
     const response = (await fetch(
       "https://covid19-brazil-api.now.sh/api/report/v1"
     ).then((res) => res.json())) as { data: DataResponse[] };
-    const initialState = (await fetch(
-      `https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/mg`
-    ).then((res) => res.json())) as DataResponse;
-    this.setState({ data: response.data, currentInfo: initialState });
+    this.setState({ data: response.data, currentInfo: response.data[0] });
   };
 
   handleChange = (event: any, value: number) => {
@@ -122,7 +119,6 @@ class Dashboard extends React.Component<Props, State> {
       }`
     ).then((res) => res.json())) as DataResponse;
     this.setState({ currentInfo: response });
-    console.log(response);
   };
 
   render() {
@@ -130,14 +126,37 @@ class Dashboard extends React.Component<Props, State> {
     const { creatingMessage, messageFailed, messageSuccess } = this.state;
     return (
       <div>
-        <div style={{ padding: 30 }}>
-          <input
-            value={this.state.query}
-            onChange={(e) => this.setState({ query: e.target.value })}
-          />
-          <Button color="info" onClick={() => this.handleSubmit()}>
-            Cancelar
-          </Button>
+        <div className={classes.cardChangeStateWrapper}>
+          <Card className={classes.cardChangeState}>
+            <GridContainer>
+              <h4 className={classes.selectedState}>Alterar estado (sigla)</h4>
+              <GridItem xs={12}>
+                <CustomInput
+                  labelText="Nome"
+                  id="name"
+                  color="success"
+                  inputProps={{
+                    value: this.state.query,
+                    onChange: (e: any) =>
+                      this.setState({ query: e.target.value }),
+                  }}
+                  formControlProps={{
+                    fullWidth: true,
+                  }}
+                />
+              </GridItem>
+            </GridContainer>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={() => this.handleSubmit()}
+            >
+              Buscar
+            </Button>
+          </Card>
+          <div style={{ paddingLeft: 20 }}>
+            <h4>{this.state.currentInfo.state}</h4>
+          </div>
         </div>
         <GridContainer>
           <GridItem xs={12} sm={6} md={3}>
