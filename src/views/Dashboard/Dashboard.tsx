@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 // react plugin for creating charts
 import ChartistGraph from "react-chartist";
 // @material-ui/core
@@ -71,163 +71,141 @@ interface DataResponse {
   datetime: string | Date;
 }
 
-class Dashboard extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      value: 0,
-      creatingMessage: false,
-      messageSuccess: true,
-      messageFailed: true,
-      query: "",
-      currentInfo: {
-        uid: 0,
-        uf: "",
-        datetime: "",
-        state: "",
-        cases: 0,
-        deaths: 0,
-        suspects: 0,
-        refuses: 0,
-      },
-      data: [],
+const Dashboard: React.FC<Props> = ({ classes }) => {
+  const [data, setData] = useState<State>({
+    creatingMessage: true,
+    messageFailed: false,
+    messageSuccess: false,
+    currentInfo: {
+      uid: 0,
+      uf: "",
+      state: "",
+      cases: 0,
+      deaths: 0,
+      suspects: 0,
+      refuses: 0,
+      datetime: "",
+    },
+    query: "",
+    value: 0,
+    data: [],
+  });
+
+  useEffect(() => {
+    const getData = async () => {
+      const response = (await fetch(
+        "https://covid19-brazil-api.now.sh/api/report/v1"
+      ).then((res) => res.json())) as { data: DataResponse[] };
+      setData({ ...data, data: response.data, currentInfo: response.data[0] });
     };
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChangeIndex = this.handleChangeIndex.bind(this);
-  }
+    getData();
+  }, []);
 
-  componentDidMount = async () => {
+  const handleSubmit = async () => {
     const response = (await fetch(
-      "https://covid19-brazil-api.now.sh/api/report/v1"
-    ).then((res) => res.json())) as { data: DataResponse[] };
-    this.setState({ data: response.data, currentInfo: response.data[0] });
-  };
-
-  handleChange = (event: any, value: number) => {
-    this.setState({ value });
-  };
-
-  handleChangeIndex = (index: number) => {
-    this.setState({ value: index });
-  };
-
-  handleSubmit = async () => {
-    const response = (await fetch(
-      `https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/${
-        this.state.query
-      }`
+      `https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/${data.query}`
     ).then((res) => res.json())) as DataResponse;
-    this.setState({ currentInfo: response });
+    setData({ ...data, currentInfo: response });
   };
 
-  render() {
-    const { classes } = this.props;
-    const { creatingMessage, messageFailed, messageSuccess } = this.state;
-    return (
-      <div>
-        <div className={classes.cardChangeStateWrapper}>
-          <Card className={classes.cardChangeState}>
-            <GridContainer>
-              <h4 className={classes.selectedState}>Alterar estado (sigla)</h4>
-              <GridItem xs={12}>
-                <CustomInput
-                  labelText="Nome"
-                  id="name"
-                  color="success"
-                  inputProps={{
-                    value: this.state.query,
-                    onChange: (e: any) =>
-                      this.setState({ query: e.target.value }),
-                  }}
-                  formControlProps={{
-                    fullWidth: true,
-                  }}
-                />
-              </GridItem>
-            </GridContainer>
-            <Button
-              color="primary"
-              variant="outlined"
-              onClick={() => this.handleSubmit()}
-            >
-              Buscar
-            </Button>
-          </Card>
-          <div style={{ paddingLeft: 20 }}>
-            <h4>{this.state.currentInfo.state}</h4>
-          </div>
+  return (
+    <div>
+      <div className={classes.cardChangeStateWrapper}>
+        <Card className={classes.cardChangeState}>
+          <GridContainer>
+            <h4 className={classes.selectedState}>Alterar estado (sigla)</h4>
+            <GridItem xs={12}>
+              <CustomInput
+                labelText="Nome"
+                id="name"
+                color="success"
+                inputProps={{
+                  value: data.query,
+                  onChange: (e: any) =>
+                    setData({ ...data, query: e.target.value }),
+                }}
+                formControlProps={{
+                  fullWidth: true,
+                }}
+              />
+            </GridItem>
+          </GridContainer>
+          <Button color="primary" onClick={() => handleSubmit()}>
+            Buscar
+          </Button>
+        </Card>
+        <div style={{ paddingLeft: 20 }}>
+          <h4>{data.currentInfo.state}</h4>
         </div>
-        <GridContainer>
-          <GridItem xs={12} sm={6} md={3}>
-            <CardDash
-              classes={classes}
-              icon={<Store />}
-              title="Cases"
-              subtitle="Last 24 Hours"
-              value={this.state.currentInfo.cases}
-              type="success"
-            />
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
-            <CardDash
-              classes={classes}
-              icon={<Icon>content_copy</Icon>}
-              title="Deaths"
-              subtitle="Get more space"
-              value={this.state.currentInfo.deaths}
-              type="danger"
-            />
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
-            <CardDash
-              classes={classes}
-              icon={<Icon>info_outline</Icon>}
-              title="Suspects"
-              subtitle="Tracked from Github"
-              value={this.state.currentInfo.suspects}
-              type="warning"
-            />
-          </GridItem>
-          <GridItem xs={12} sm={6} md={3}>
-            <CardDash
-              classes={classes}
-              icon={<Accessibility />}
-              title="Refuses"
-              subtitle="Just Updated"
-              value={this.state.currentInfo.refuses}
-              type="info"
-            />
-          </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card chart={true}>
-              <CardHeader color="success">
-                <ChartistGraph
-                  className="ct-chart"
-                  data={{
-                    labels: this.state.data.map((item) => item.uf),
-                    series: [this.state.data.map((item) => item.deaths)],
-                  }}
-                  type="Line"
-                />
-              </CardHeader>
-              <CardBody>
-                <h4 className={classes.cardTitle}>
-                  Número de mortes por estado
-                </h4>
-              </CardBody>
-              <CardFooter chart={true}>
-                <div className={classes.stats}>
-                  <AccessTime /> updated{" "}
-                  {this.state.data.length > 0 &&
-                    moment(this.state.data[0].datetime).fromNow()}
-                </div>
-              </CardFooter>
-            </Card>
-          </GridItem>
-          {/* <GridItem xs={12} sm={12} md={4}>
+      </div>
+      <GridContainer>
+        <GridItem xs={12} sm={6} md={3}>
+          <CardDash
+            classes={classes}
+            icon={<Store />}
+            title="Cases"
+            subtitle="Last 24 Hours"
+            value={data.currentInfo.cases}
+            type="success"
+          />
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <CardDash
+            classes={classes}
+            icon={<Icon>content_copy</Icon>}
+            title="Deaths"
+            subtitle="Get more space"
+            value={data.currentInfo.deaths}
+            type="danger"
+          />
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <CardDash
+            classes={classes}
+            icon={<Icon>info_outline</Icon>}
+            title="Suspects"
+            subtitle="Tracked from Github"
+            value={data.currentInfo.suspects}
+            type="warning"
+          />
+        </GridItem>
+        <GridItem xs={12} sm={6} md={3}>
+          <CardDash
+            classes={classes}
+            icon={<Accessibility />}
+            title="Refuses"
+            subtitle="Just Updated"
+            value={data.currentInfo.refuses}
+            type="info"
+          />
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={4}>
+          <Card chart={true}>
+            <CardHeader color="success">
+              <ChartistGraph
+                className="ct-chart"
+                data={{
+                  labels: data.data.map((item) => item.uf),
+                  series: [data.data.map((item) => item.deaths)],
+                }}
+                type="Line"
+              />
+            </CardHeader>
+            <CardBody>
+              <h4 className={classes.cardTitle}>Número de mortes por estado</h4>
+            </CardBody>
+            <CardFooter chart={true}>
+              <div className={classes.stats}>
+                <AccessTime /> updated{" "}
+                {data.data.length > 0 &&
+                  moment(data.data[0].datetime).fromNow()}
+              </div>
+            </CardFooter>
+          </Card>
+        </GridItem>
+        <GridItem xs={12} sm={12} md={4}>
             <Card chart={true}>
               <CardHeader color="warning">
                 <ChartistGraph
@@ -270,132 +248,129 @@ class Dashboard extends React.Component<Props, State> {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem> */}
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12} sm={12} md={12}>
-            <Card>
-              <CardHeader color="warning">
-                <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
-                <p className={classes.cardCategoryWhite}>
-                  New employees on 15th September, 2016
-                </p>
-              </CardHeader>
-              <CardBody>
-                <Table
-                  tableHeaderColor="warning"
-                  tableHead={["UF", "Estado", "Casos", "Mortes", "Suspeitas"]}
-                  tableData={this.state.data.map((item) => {
-                    return [
-                      item.uf,
-                      item.state,
-                      item.cases,
-                      item.deaths,
-                      item.suspects,
-                    ];
-                  })}
-                />
-              </CardBody>
-            </Card>
           </GridItem>
-        </GridContainer>
-        <GridContainer>
-          <GridItem xs={12}>
-            <Card>
-              <CardHeader color="success">
-                <div className={classes.messages}>
-                  <h4 className={classes.cardTitleWhite}>
-                    Mensagens Positivas
-                  </h4>
-                  {!creatingMessage && (
-                    <Button
-                      color="transparent"
-                      variant="outlined"
-                      onClick={() => this.setState({ creatingMessage: true })}
-                    >
-                      Enviar Mensagem
-                    </Button>
-                  )}
-                </div>
-              </CardHeader>
-              <CardBody>
-                {!creatingMessage ? (
-                  <React.Fragment>
-                    <h5 className={classes.cardTitle}>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                      Cras ac est pulvinar, tempor turpis id, vehicula magna.
-                    </h5>
-                    <p className={classes.cardCategory}>Jane Doe</p>
-                  </React.Fragment>
-                ) : (
-                  <React.Fragment>
-                    <GridContainer>
-                      <GridItem xs={12}>
-                        <CustomInput
-                          labelText="Nome"
-                          id="name"
-                          color="success"
-                          formControlProps={{
-                            fullWidth: true,
-                          }}
-                        />
-                      </GridItem>
-                    </GridContainer>
-                    <GridContainer>
-                      <GridItem xs={12}>
-                        <CustomInput
-                          labelText="Mensagem"
-                          id="message"
-                          formControlProps={{
-                            fullWidth: true,
-                          }}
-                          inputProps={{
-                            multiline: true,
-                            rows: 5,
-                          }}
-                        />
-                      </GridItem>
-                    </GridContainer>
-                  </React.Fragment>
-                )}
-              </CardBody>
-              {creatingMessage && (
-                <CardFooter>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12} sm={12} md={12}>
+          <Card>
+            <CardHeader color="warning">
+              <h4 className={classes.cardTitleWhite}>Employees Stats</h4>
+              <p className={classes.cardCategoryWhite}>
+                New employees on 15th September, 2016
+              </p>
+            </CardHeader>
+            <CardBody>
+              <Table
+                tableHeaderColor="warning"
+                tableHead={["UF", "Estado", "Casos", "Mortes", "Suspeitas"]}
+                tableData={data.data.map((item) => {
+                  return [
+                    item.uf,
+                    item.state,
+                    item.cases,
+                    item.deaths,
+                    item.suspects,
+                  ];
+                })}
+              />
+            </CardBody>
+          </Card>
+        </GridItem>
+      </GridContainer>
+      <GridContainer>
+        <GridItem xs={12}>
+          <Card>
+            <CardHeader color="success">
+              <div className={classes.messages}>
+                <h4 className={classes.cardTitleWhite}>Mensagens Positivas</h4>
+                {!data.creatingMessage && (
                   <Button
-                    color="danger"
-                    onClick={() => this.setState({ creatingMessage: false })}
+                    color="transparent"
+                    variant="outlined"
+                    onClick={() => setData({ ...data, creatingMessage: true })}
                   >
-                    Cancelar
+                    Enviar Mensagem
                   </Button>
-                  <Button color="success">Enviar Mensagem</Button>
-                </CardFooter>
+                )}
+              </div>
+            </CardHeader>
+            <CardBody>
+              {!data.creatingMessage ? (
+                <React.Fragment>
+                  <h5 className={classes.cardTitle}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Cras ac est pulvinar, tempor turpis id, vehicula magna.
+                  </h5>
+                  <p className={classes.cardCategory}>Jane Doe</p>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <GridContainer>
+                    <GridItem xs={12}>
+                      <CustomInput
+                        labelText="Nome"
+                        id="name"
+                        color="success"
+                        formControlProps={{
+                          fullWidth: true,
+                        }}
+                      />
+                    </GridItem>
+                  </GridContainer>
+                  <GridContainer>
+                    <GridItem xs={12}>
+                      <CustomInput
+                        labelText="Mensagem"
+                        id="message"
+                        formControlProps={{
+                          fullWidth: true,
+                        }}
+                        inputProps={{
+                          multiline: true,
+                          rows: 5,
+                        }}
+                      />
+                    </GridItem>
+                  </GridContainer>
+                </React.Fragment>
               )}
-              {messageFailed && (
-                <CardFooter>
-                  <div className={classes.stats}>
-                    <Danger>
-                      <Warning />
-                      Falha ao enviar mensagem
-                    </Danger>
-                  </div>
-                </CardFooter>
-              )}
-              {messageSuccess && (
-                <CardFooter>
-                  <div className={classes.stats}>
-                    <Success>
-                      <CheckIcon />
-                      Mensagem enviada com sucesso
-                    </Success>
-                  </div>
-                </CardFooter>
-              )}
-            </Card>
-          </GridItem>
-        </GridContainer>
-      </div>
-    );
-  }
-}
+            </CardBody>
+            {data.creatingMessage && (
+              <CardFooter>
+                <Button
+                  color="danger"
+                  onClick={() => setData({ ...data, creatingMessage: false })}
+                >
+                  Cancelar
+                </Button>
+                <Button color="success">Enviar Mensagem</Button>
+              </CardFooter>
+            )}
+            {data.messageFailed && (
+              <CardFooter>
+                <div className={classes.stats}>
+                  <Danger>
+                    <Warning />
+                    Falha ao enviar mensagem
+                  </Danger>
+                </div>
+              </CardFooter>
+            )}
+            {data.messageSuccess && (
+              <CardFooter>
+                <div className={classes.stats}>
+                  <Success>
+                    <CheckIcon />
+                    Mensagem enviada com sucesso
+                  </Success>
+                </div>
+              </CardFooter>
+            )}
+          </Card>
+        </GridItem>
+      </GridContainer>
+    </div>
+  );
+};
 
 export default withStyles(dashboardStyle)(Dashboard);
