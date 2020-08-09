@@ -41,7 +41,7 @@ import {
 
 import dashboardStyle from "../../assets/jss/material-dashboard-react/views/dashboardStyle";
 import CustomInput from "../../components/CustomInput/CustomInput";
-import { InputLabel } from "@material-ui/core";
+import { InputLabel, FormControl, Select, MenuItem } from "@material-ui/core";
 import Success from "../../components/Typography/Success";
 import CardDash from "../../components/CardDash";
 
@@ -52,9 +52,9 @@ interface Props {
 interface Response {
   country: string;
   cases: number;
-  confirmed: number;
   deaths: number;
-  recovered: number;
+  suspects: number;
+  refuses: number;
   updated_at: string | Date;
 }
 
@@ -71,7 +71,9 @@ interface ResponseList {
 
 interface State {
   data: Response;
+  selectedState: string;
   dataList: ResponseList[];
+  dataDateList: ResponseList[][];
   creatingMessage: boolean;
   messageSuccess: boolean;
   messageFailed: boolean;
@@ -84,12 +86,14 @@ class Dashboard extends React.Component<Props, State> {
       data: {
         country: "",
         cases: 0,
-        confirmed: 0,
+        suspects: 0,
         deaths: 0,
-        recovered: 0,
+        refuses: 0,
         updated_at: "",
       },
+      selectedState: "MG",
       dataList: [],
+      dataDateList: [[]],
       creatingMessage: false,
       messageSuccess: true,
       messageFailed: true,
@@ -98,14 +102,47 @@ class Dashboard extends React.Component<Props, State> {
 
   componentDidMount = async () => {
     const response = (await fetch(
-      "https://covid19-brazil-api.now.sh/api/report/v1/brazil/"
-    ).then((resp) => resp.json())) as {
-      data: Response;
-    };
+      "https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/mg"
+    ).then((resp) => resp.json())) as Response;
     const responseList = await axios.get<{ data: ResponseList[] }>(
       "https://covid19-brazil-api.now.sh/api/report/v1"
     );
-    this.setState({ data: response.data, dataList: responseList.data.data });
+
+    const listDate: ResponseList[][] = [];
+
+    const listOfDates = [
+      "20200801",
+      "20200802",
+      "20200803",
+      "20200804",
+      "20200805",
+      "20200806",
+      "20200807",
+      "20200808",
+    ];
+    for (var i = 0; i < listOfDates.length; i++) {
+      const responseList = await axios.get<{ data: ResponseList[] }>(
+        `https://covid19-brazil-api.now.sh/api/report/v1/brazil/${
+          listOfDates[i]
+        }`
+      );
+      listDate.push(responseList.data.data);
+    }
+    console.log(listDate);
+
+    this.setState({
+      data: response,
+      dataDateList: listDate,
+      dataList: responseList.data.data,
+    });
+  };
+
+  handleChangeState = async (value: string) => {
+    const response = (await fetch(
+      `https://covid19-brazil-api.now.sh/api/report/v1/brazil/uf/${value}`
+    ).then((resp) => resp.json())) as Response;
+
+    this.setState({ data: response, selectedState: value });
   };
 
   render() {
@@ -114,12 +151,36 @@ class Dashboard extends React.Component<Props, State> {
     return (
       <div>
         <GridContainer>
+          <div style={{ padding: 20 }}>
+            <form>
+              <FormControl className={classes.formControl}>
+                <InputLabel htmlFor="states-simple">Estados</InputLabel>
+                <Select
+                  value={this.state.selectedState}
+                  onChange={(e) => this.handleChangeState(e.target.value)}
+                  style={{ width: 200 }}
+                  inputProps={{
+                    name: "states",
+                    id: "states-simple",
+                  }}
+                >
+                  <MenuItem value="MG">
+                    <em>Minas Gerais</em>
+                  </MenuItem>
+                  <MenuItem value={"RJ"}>Rio de Janeiro</MenuItem>
+                  <MenuItem value={"SP"}>São Paulo</MenuItem>
+                </Select>
+              </FormControl>
+            </form>
+          </div>
+        </GridContainer>
+        <GridContainer>
           <GridItem xs={12} sm={6} md={3}>
             <CardDash
               classes={classes}
               color={"success"}
-              title={"Recovered"}
-              value={this.state.data.recovered}
+              title={"Refuses"}
+              value={this.state.data.refuses}
               icon={<Store />}
               footer={"Last 24 Hours"}
               footerIcon={<DateRange />}
@@ -144,8 +205,8 @@ class Dashboard extends React.Component<Props, State> {
             <CardDash
               classes={classes}
               color={"info"}
-              title={"Confirmed"}
-              value={this.state.data.confirmed}
+              title={"Suspects"}
+              value={this.state.data.suspects}
               icon={<Icon>info_outline</Icon>}
               footer={"Tracked from Github"}
               footerIcon={<LocalOffer />}
@@ -164,13 +225,64 @@ class Dashboard extends React.Component<Props, State> {
           </GridItem>
         </GridContainer>
         <GridContainer>
-          <GridItem xs={12} sm={12} md={4}>
+          <GridItem xs={12} sm={12} md={6}>
             <Card chart={true}>
-              <CardHeader color="success">
+              <CardHeader color="danger">
                 <ChartistGraph
                   className="ct-chart"
-                  data={dailySalesChart.data}
+                  data={{
+                    labels:
+                      this.state.dataDateList.length > 0
+                        ? this.state.dataDateList.map((item) => {
+                            return moment(
+                              item.length > 0 ? item[0].datetime : undefined
+                            ).format("DD/MM/YYYY");
+                          })
+                        : undefined,
+                    series: [
+                      this.state.dataDateList.map((item) => {
+                        return item.length > 0
+                          ? item
+                              .map((item) => {
+                                return item.deaths;
+                              })
+                              .reduce((a, b) => a + b)
+                          : undefined;
+                      }),
+                    ],
+                  }}
                   type="Line"
+                />
+              </CardHeader>
+              <CardBody>
+                <h4 className={classes.cardTitle}>Completed Tasks</h4>
+                <p className={classes.cardCategory}>
+                  Last Campaign Performance
+                </p>
+              </CardBody>
+              <CardFooter chart={true}>
+                <div className={classes.stats}>
+                  <AccessTime /> campaign sent 2 days ago
+                </div>
+              </CardFooter>
+            </Card>
+          </GridItem>
+          <GridItem xs={12} sm={12} md={6}>
+            <Card chart={true}>
+              <CardHeader color="danger">
+                <ChartistGraph
+                  className="ct-chart"
+                  data={{
+                    labels: this.state.dataList.map((item) => {
+                      return item.uf;
+                    }),
+                    series: [
+                      this.state.dataList.map((item) => {
+                        return item.deaths;
+                      }),
+                    ],
+                  }}
+                  type="Bar"
                 />
               </CardHeader>
               <CardBody>
@@ -189,7 +301,7 @@ class Dashboard extends React.Component<Props, State> {
               </CardFooter>
             </Card>
           </GridItem>
-          <GridItem xs={12} sm={12} md={4}>
+          {/* <GridItem xs={12} sm={12} md={4}>
             <Card chart={true}>
               <CardHeader color="warning">
                 <ChartistGraph
@@ -232,7 +344,7 @@ class Dashboard extends React.Component<Props, State> {
                 </div>
               </CardFooter>
             </Card>
-          </GridItem>
+          </GridItem> */}
         </GridContainer>
         <GridContainer>
           {/* <GridItem xs={12} sm={12} md={6}>
