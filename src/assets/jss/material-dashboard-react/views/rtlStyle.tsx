@@ -57,13 +57,13 @@ const rtlStyle = createStyles({
     color: grayColor[2],
     marginTop: '0px',
     minHeight: 'auto',
-    fontWeight: '300',
+    fontWeight: 300,
     fontFamily: '\'Roboto\', \'Helvetica\', \'Arial\', sans-serif',
     marginBottom: '3px',
     textDecoration: 'none',
     '& small': {
       color: grayColor[1],
-      fontWeight: '400',
+      fontWeight: 400,
       lineHeight: 1
     }
   },
@@ -71,13 +71,13 @@ const rtlStyle = createStyles({
     color: whiteColor,
     marginTop: '0px',
     minHeight: 'auto',
-    fontWeight: '300',
+    fontWeight: 300,
     fontFamily: '\'Roboto\', \'Helvetica\', \'Arial\', sans-serif',
     marginBottom: '3px',
     textDecoration: 'none',
     '& small': {
       color: grayColor[1],
-      fontWeight: '400',
+      fontWeight: 400,
       lineHeight: 1
     }
   }

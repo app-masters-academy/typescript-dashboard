@@ -84,7 +84,7 @@ const sidebarStyle = (theme: Theme) => createStyles({
     display: 'block',
     fontSize: '18px',
     textAlign: 'left',
-    fontWeight: '400',
+    fontWeight: 400,
     lineHeight: '30px',
     textDecoration: 'none',
     backgroundColor: 'transparent',

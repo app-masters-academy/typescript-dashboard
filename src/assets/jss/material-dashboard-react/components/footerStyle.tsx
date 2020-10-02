@@ -17,7 +17,7 @@ const footerStyle = createStyles({
     position: 'relative',
     display: 'block',
     ...defaultFont,
-    fontWeight: '500',
+    fontWeight: 500,
     fontSize: '12px'
   },
   left: {

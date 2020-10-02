@@ -32,7 +32,7 @@ const buttonStyle = createStyles({
     padding: '12px 30px',
     margin: '.3125rem 1px',
     fontSize: '12px',
-    fontWeight: '400',
+    fontWeight: 400,
     textTransform: 'uppercase',
     letterSpacing: '0',
     willChange: 'box-shadow, transform',

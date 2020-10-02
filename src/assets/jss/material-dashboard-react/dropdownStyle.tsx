@@ -109,7 +109,7 @@ const dropdownStyle = (theme: Theme) => createStyles(({
     transition: 'all 150ms linear',
     display: 'block',
     clear: 'both',
-    fontWeight: '400',
+    fontWeight: 400,
     lineHeight: '1.42857143',
     color: grayColor[8],
     whiteSpace: 'nowrap',

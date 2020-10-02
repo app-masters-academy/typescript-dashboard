@@ -21,7 +21,7 @@ const tooltipStyle = createStyles({
     fontFamily: '"Helvetica Neue",Helvetica,Arial,sans-serif',
     fontSize: '12px',
     fontStyle: 'normal',
-    fontWeight: '400',
+    fontWeight: 400,
     textShadow: 'none',
     textTransform: 'none',
     letterSpacing: 'normal',

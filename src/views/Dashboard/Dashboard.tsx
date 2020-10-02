@@ -41,7 +41,6 @@ import {
 
 import dashboardStyle from "../../assets/jss/material-dashboard-react/views/dashboardStyle";
 import CustomInput from "../../components/CustomInput/CustomInput";
-import { InputLabel } from "@material-ui/core";
 import Success from "../../components/Typography/Success";
 
 interface Props {
