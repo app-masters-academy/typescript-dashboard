@@ -8,10 +8,12 @@
 // let endereco: { rua: string; numero: number; bairro: string };
 
 // endereco = {
-//   rua: 'Barão do Rio Branco',
+//   rua: "Barão do Rio Branco",
 //   numero: 3480,
-//   bairro: 'Altos Passos'
+//   bairro: "Altos Passos",
 // };
+
+// console.log(endereco);
 
 /**
  * É possível definir campos opcionais usando `?:`
@@ -37,9 +39,9 @@
  * # UNIÃO E INTERSECÇÃO DE TIPOS
  */
 
- /**
-  * Algumas variaveis pode assumir pode representar mais de uma coisa, usamos a intersecção dos tipos com `|`
-  */
+/**
+ * Algumas variáveis pode assumir pode representar mais de uma coisa, usamos a intersecção dos tipos com `|`
+ */
 // interface ContatoEmail {
 //   nome: string;
 //   email: string;
@@ -51,7 +53,6 @@
 // }
 
 // let contato: ContatoEmail | ContatoTelefone;
-
 
 /**
  * Também é possível que uma variável implemente mais de um tipo ao mesmo tempo, usamos `&`

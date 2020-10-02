@@ -25,7 +25,7 @@
  */
 
 /**
- * `listTexto` tem o tipo definido explicitamenta usando []
+ * `listTexto` tem o tipo definido explicitamente usando []
  */
 // const listaTexto: string[] = [];
 

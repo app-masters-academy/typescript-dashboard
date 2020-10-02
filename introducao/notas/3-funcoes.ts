@@ -3,7 +3,7 @@
  */
 
  /**
-  * Declarando tipo dos parametros
+  * Declarando tipo dos parâmetros
   */
 //  function soma(a: number, b: number) {
 //    return a + b;
@@ -30,7 +30,7 @@
 // let func: (a: number, b: number) => number;
 
 /**
- * Objetos como parametros de função
+ * Objetos como parâmetros de função
  */
 // const sendEmail = (contato: { email: string }) => {
 //   // ...

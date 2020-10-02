@@ -6,13 +6,13 @@
 Para isso, vamos fazer juntos um página com um dashboard bem visual. Então já preparamos um projeto base que já possui diversos exemplos de componentes de visualização que poderão ser usados durante o Bootcamp. 
 
 > _O Conceito de componentes não será abordado durante as explicações, mas fique a vontade para perguntar em nosso canal do slack_
-___
+
 ## Antes de tudo
 
 Se não conseguir realizar algum dos passos ou tiver alguma dúvida, pode nos perguntar no canal `#typescript` do [Slack Dev Juiz de Fora](http://devjf.slack.com/).
 
 Se ainda não estiver no Slack, você pode visitar [https://devjf.herokuapp.com/](https://devjf.herokuapp.com/) e gerar um convite. Um email será enviado para o endereço cadastrado com as próximas instruções.
-___
+
 ## Primeiro passo - Configurar o ambiente
 
 O primeiro passo começa antes mesmo do nosso primeiro encontro. Precisamos que você prepare sua máquina para que possamos começar já com o ritmo total e assim aproveitar nosso tempo juntos da melhor maneira possível.
@@ -72,7 +72,7 @@ Para iniciar o projeto, primeiro é necessária a instalação de algumas coisas
   Você deverá ver o número da versão do compilador que acabou de instalar.
 
 Além disso, esperamos que use um Editor (ou IDE) que dê suporte ao TypeScript. Nós recomendamos o [Visual Studio Code](https://code.visualstudio.com/) pela sua facilidade, mas se você já está acostumado com outro, veja [Aqui](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support) se ele está na lista que oferecem suporte à linguagem.
-___
+
 ## Segundo passo - rodar o projeto base
 
 ### Iniciando projeto
@@ -85,7 +85,7 @@ ___
 1. Após instalar as dependências execute o projeto usando:
    - `npm start` para se estiver usando o NPM.
    - `yarn start` para Yarn.
-___
+
 ## Ainda tem alguma dúvida?
 
 Além da explicação do Bootcamp e das dúvidas no Slack, separamos pra você um material que pode tirar suas dúvidas ou te explicar melhor algum ponto que não era nosso foco aqui no Bootcamp.
@@ -94,6 +94,7 @@ Além da explicação do Bootcamp e das dúvidas no Slack, separamos pra você u
 
 - [O que é Typescript](https://imasters.com.br/dotnet/net-o-que-e-typescript-e-quais-os-seus-beneficios)
 - [ECMAScript](https://medium.com/trainingcenter/afinal-javascript-e-ecmascript-s%C3%A3o-a-mesma-coisa-498374abbc47)
+- [Playground](https://www.typescriptlang.org/play)
 
 ### React
 
