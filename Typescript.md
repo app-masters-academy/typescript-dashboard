@@ -303,7 +303,7 @@ A declaração de tipos em funções segue o mesmo padrão que a declaração de
   }
 ```
 
-Assim como com as outrar variáveis, o TypeScript geralmente consegui inferir o tipo de retorno das funções.
+Assim como com as outras variáveis, o TypeScript geralmente consegui inferir o tipo de retorno das funções.
 
 Além da declaração das funções em si, nó também podemos definir variáveis com o tipo de uma função, a notação desse tipo é muito proxima a declaração usando arrow functions:
 
@@ -311,7 +311,7 @@ Além da declaração das funções em si, nó também podemos definir variávei
 let fun: (a: number, b: number) => number;
 ```
 
-#### Objetos como parametros de funções
+#### Objetos como parâmetros de funções
 
 O TypeScript tem uma peculiaridade em relação à passagem de objetos como parâmetros de funções: Enquanto nos exemplos anteriores não podíamos definir chaves que não existiam no tipo do objeto, as funções definem apenas os campos que são obrigatórios no objeto.
 
