@@ -3,18 +3,23 @@
 ## Overview
 
 **O intuito deste projeto é auxiliar no estudo das tecnologias React e Typescript.**
-O projeto se constitui em uma única página de dashboard e esta página já possui diversos exemplos de componentes de visualiação. _(A ideia de componentes não será abordada durante as explicações, más fique a vontade para perguntar em nosso canal do slack)_.
-Durante os estudos será pedido para realizar alterações e adições a página de dashboard. _(Não será cobrado um tema especifico)_
+Para isso, vamos fazer juntos um página com um dashboard bem visual. Então já preparamos um projeto base que já possui diversos exemplos de componentes de visualização que poderão ser usados durante o Bootcamp. 
 
-## Antes do primeiro encontro
+> _O Conceito de componentes não será abordado durante as explicações, mas fique a vontade para perguntar em nosso canal do slack_
+___
+## Antes de tudo
 
-É recomendada a leitura dos seguintes tópicos para melhor compreensão do que pode ser feito na aplicação. Qualquer dúvida pode nos perguntar no canal `#typescript` do [Slack Dev Juiz de Fora](http://devjf.slack.com/).
+Se não conseguir realizar algum dos passos ou tiver alguma dúvida, pode nos perguntar no canal `#typescript` do [Slack Dev Juiz de Fora](http://devjf.slack.com/).
 
 Se ainda não estiver no Slack, você pode visitar [https://devjf.herokuapp.com/](https://devjf.herokuapp.com/) e gerar um convite. Um email será enviado para o endereço cadastrado com as próximas instruções.
+___
+## Primeiro passo - Configurar o ambiente
+
+O primeiro passo começa antes mesmo do nosso primeiro encontro. Precisamos que você prepare sua máquina para que possamos começar já com o ritmo total e assim aproveitar nosso tempo juntos da melhor maneira possível.
 
 ### Configuração do Ambiente
 
-Para iniciar o projeto, primeiro é necessária a instalação de um dos seguintes gerenciadores de dependências.
+Para iniciar o projeto, primeiro é necessária a instalação de algumas coisas.
 
 - [**NodeJs**](https://nodejs.org/en/)
   
@@ -66,22 +71,24 @@ Para iniciar o projeto, primeiro é necessária a instalação de um dos seguint
 
   Você deverá ver o número da versão do compilador que acabou de instalar.
 
-Além disso, é esperado que você esteja usando um editor que dê suporte ao TypeScript. [Aqui](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support) é possível ver uma lista de Editores e IDEs que oferecem suporte para a linguagem.
-
-Se seu editor não estiver na lista ou não tiver nenhum instalado, recomendados que baixe e instale o [Visual Studio Code](https://code.visualstudio.com/).
+Além disso, esperamos que use um Editor (ou IDE) que dê suporte ao TypeScript. Nós recomendamos o [Visual Studio Code](https://code.visualstudio.com/) pela sua facilidade, mas se você já está acostumado com outro, veja [Aqui](https://github.com/Microsoft/TypeScript/wiki/TypeScript-Editor-Support) se ele está na lista que oferecem suporte à linguagem.
+___
+## Segundo passo - rodar o projeto base
 
 ### Iniciando projeto
 
 1. Clone o repositório `git clone https://github.com/app-masters-academy/typescript-dashboard.git`
-2. Após clonar o repositório entre na pasta do projeto `cd typescript-dashboard`
-3. Instale as dependências utilizando do gerenciador escolhido acima.
+1. Após clonar o repositório entre na pasta do projeto `cd typescript-dashboard`
+1. Instale as dependências utilizando do gerenciador escolhido acima.
    - `npm i` para se estiver usando o NPM.
    - `yarn` para Yarn.
-4. Após instalar as depenências execute o projeto usando:
+1. Após instalar as dependências execute o projeto usando:
    - `npm start` para se estiver usando o NPM.
    - `yarn start` para Yarn.
-  
-## Conteúdo para estudo
+___
+## Ainda tem alguma dúvida?
+
+Além da explicação do Bootcamp e das dúvidas no Slack, separamos pra você um material que pode tirar suas dúvidas ou te explicar melhor algum ponto que não era nosso foco aqui no Bootcamp.
 
 ### Typescript
 
@@ -98,13 +105,13 @@ Se seu editor não estiver na lista ou não tiver nenhum instalado, recomendados
   
 ### Apis de Exemplo
 
-- [Covid19 Brazil API](https://covid19-brazil-api-docs.now.sh/)
+- [COVID-19 Brazil API](https://covid19-brazil-api-docs.now.sh/)
 - [Postman COVID-19 API Resource Center](https://covid-19-apis.postman.com/)
 
 ### Requisições
 
-_Atenção: Para realizar a requisição a API é recomendado utilizar dos estados e do ciclo de vida do componente chamando [componentDidMout](https://pt-br.reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class)_
-Para fazer as requisições à API sugerimos a utilização dos seguintes métodos.
-
-- [fetch](https://reactnative.dev/docs/network)
+_Atenção: Para realizar a requisição a API é recomendado utilizar dos estados e do ciclo de vida do componente chamando [componentDidMount](https://pt-br.reactjs.org/docs/state-and-lifecycle.html#adding-lifecycle-methods-to-a-class)_
+Para fazer as requisições à API sugerimos a utilização dos seguintes métodos:
 - [axios](https://github.com/axios/axios)
+- [fetch](https://reactnative.dev/docs/network)
+
