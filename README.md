@@ -104,10 +104,22 @@ Além da explicação do Bootcamp e das dúvidas no Slack, separamos pra você u
 - [Roteamento com React Router Dom](https://blog.rocketseat.com.br/paginacao-react-router/)
 - [Tipando em Componentes](https://medium.com/@oieduardorabelo/react-e-typescript-o-dilema-defaultprops-4711e0e6f271)
   
+
+# Durante o Bootcamp
+
+## Terceiro passo - Botando a mão na massa
+
+Nós vamos usar o código que já temos para criar um componente genérico para os dados que estão vindo da API.
+
+Recomendamos utilizar algumas APIs abertas, mas você pode escolher outra que achar melhor ou alguma API própria.
+
+
 ### Apis de Exemplo
 
+- [OpenWeather](https://openweathermap.org/api)
 - [COVID-19 Brazil API](https://covid19-brazil-api-docs.now.sh/)
 - [Postman COVID-19 API Resource Center](https://covid-19-apis.postman.com/)
+
 
 ### Requisições
 
@@ -115,4 +127,3 @@ _Atenção: Para realizar a requisição a API é recomendado utilizar dos estad
 Para fazer as requisições à API sugerimos a utilização dos seguintes métodos:
 - [axios](https://github.com/axios/axios)
 - [fetch](https://reactnative.dev/docs/network)
-
