@@ -43,6 +43,21 @@ import dashboardStyle from "../../assets/jss/material-dashboard-react/views/dash
 import CustomInput from "../../components/CustomInput/CustomInput";
 import Success from "../../components/Typography/Success";
 
+type APIResponse = {
+  coord: {
+    lon: number;
+    lat: number;
+  }
+  weather: Array<{
+    id: number;
+    description: string;
+  }>
+  main: {
+    temp: number;
+    feels_like: number;
+  }
+}
+
 interface Props {
   classes: any;
 }
@@ -51,7 +66,8 @@ interface State {
   value: number;
   creatingMessage: boolean;
   messageSuccess: boolean;
-  messageFailed: boolean
+  messageFailed: boolean;
+  apiResponse?: APIResponse;
 }
 
 class Dashboard extends React.Component<Props, State> {
@@ -63,9 +79,18 @@ class Dashboard extends React.Component<Props, State> {
       messageSuccess: true,
       messageFailed: true,
     };
+
     this.handleChange = this.handleChange.bind(this);
     this.handleChangeIndex = this.handleChangeIndex.bind(this);
   }
+
+  componentDidMount(){
+    const url = "http://api.openweathermap.org/data/2.5/weather?q=juiz+de+fora&appid=c4d9c71fbfaf3e54583129ce84241182&lang=pt&units=metric";
+    fetch(url)
+    .then((response) => response.json())
+    .then((response: APIResponse) => this.setState({ apiResponse: response }));
+  }
+
   handleChange = (event: any, value: number) => {
     this.setState({ value });
   };
@@ -86,8 +111,8 @@ class Dashboard extends React.Component<Props, State> {
                 <CardIcon color="success">
                   <Store />
                 </CardIcon>
-                <p className={classes.cardCategory}>Revenue</p>
-                <h3 className={classes.cardTitle}>$34,245</h3>
+                <p className={classes.cardCategory}>Temperatura</p>
+                <h3 className={classes.cardTitle}>{this.state.apiResponse?.main.temp}</h3>
               </CardHeader>
               <CardFooter stats={true}>
                 <div className={classes.stats}>
